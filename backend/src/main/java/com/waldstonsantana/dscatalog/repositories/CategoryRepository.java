@@ -7,4 +7,5 @@ import com.waldstonsantana.dscatalog.entities.Category;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
+	
 }
