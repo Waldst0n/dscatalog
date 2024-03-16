@@ -1,12 +1,11 @@
 package com.waldstonsantana.dscatalog.services;
 
-import java.util.Iterator;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +20,6 @@ import com.waldstonsantana.dscatalog.services.exceptions.DatabaseException;
 import com.waldstonsantana.dscatalog.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.constraints.AssertFalse.List;
 
 @Service
 public class ProductService {
@@ -33,8 +31,8 @@ public class ProductService {
 	private CategoryRepository categoryRepository;
 
 	@Transactional(readOnly = true)
-	public Page<ProductDto> findAllPaged(PageRequest pageRequest) {
-		Page<Product> list = productRepository.findAll(pageRequest);
+	public Page<ProductDto> findAllPaged(Pageable pageable) {
+		Page<Product> list = productRepository.findAll(pageable);
 
 		return list.map(x -> new ProductDto(x, x.getCategories()));
 	}
@@ -51,7 +49,6 @@ public class ProductService {
 	public ProductDto insert(ProductDto dto) {
 		Product entity = new Product();
 		copyDtoToEntity(dto, entity);
-		
 		
 		
 		entity = productRepository.save(entity);
